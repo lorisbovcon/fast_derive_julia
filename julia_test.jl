@@ -42,7 +42,7 @@ function push_forward(f, primal::Real, tangent::Real)
   return primal_out, tangent_out
 end
 
-function deriviraj(f, x::Real)
+function odvajaj(f, x::Real)
   v = one(x)
   _, df_dx = push_forward(f, x, v)
   return df_dx
@@ -52,9 +52,9 @@ function f(x)
   return 3 * x ^ 2 + 10 * x - 10
 end
 
-x_point = 3.0
+točka_x = 3.0
 
-f(x_point)
+f(točka_x)
 
-print(deriviraj(f, x_point))
+print(odvajaj(f, točka_x))
 print("\n")
