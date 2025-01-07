@@ -1,7 +1,6 @@
 import Pkg
 import Base
 
-x_point = 3.0
 print("Enter the point to evaluate at: ")
 x_point = readline()
 x_point = tryparse(Float64, x_point)
