@@ -9,6 +9,44 @@ function f(x)
   return x ^ (1/2)
 end
 
+function enax(x)
+  t = x + 1
+  p = 1
+  for i = 2:20;
+    p = p * i;
+    t = t + (x ^ i) / p
+  end
+  t
+end
+
+function sinus(x)
+  t = x;
+  p = 1;
+  k = 1;
+  for i = 2:20;
+    p = p * i;
+    if i % 2 != 0 
+      k = k * (-1);
+      t = t + k * (x ^ i) / p
+    end
+  end
+  t
+end
+
+function sinus(x)
+  t = 1;
+  p = 1;
+  k = 1;
+  for i = 2:20;
+    p = p * i;
+    if i % 2 == 0 
+      k = k * (-1);
+      t = t + k * (x ^ i) / p
+    end
+  end
+  t
+end
+
 struct D_Š{T}
   vf::T;
   vo::T;
