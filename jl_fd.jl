@@ -9,58 +9,61 @@ function f(x)
   return x ^ (1/2)
 end
 
-struct dualno_število{T}
-  realna_komponenta::T;
-  dualna_komponenta::T;
+struct D_Š{T}
+  vf::T;
+  vo::T;
 end
 
-#Base.:*(x::dualno_število, y::dualno_število) = dualno_število(x.realna_komponenta * y.realna_komponenta, x.realna_komponenta * y.dualna_komponenta + x.dualna_komponenta * y.realna_komponenta)
-#Base.:*(x, y::dualno_število) = dualno_število(x * y.realna_komponenta, x * y.dualna_komponenta)
-#Base.:+(x::dualno_število, y::dualno_število) = dualno_število(x.realna_komponenta + y.realna_komponenta, x.dualna_komponenta + y.dualna_komponenta)
-#Base.:+(x, y::dualno_število) = dualno_število(x + y.realna_komponenta, y.dualna_komponenta)
-#Base.:+(x::dualno_število, y) = dualno_število(x.realna_komponenta + y, x.dualna_komponenta)
-#Base.:-(x::dualno_število, y::dualno_število) = dualno_število(x.realna_komponenta - y.realna_komponenta, x.dualna_komponenta - y.dualna_komponenta)
-#Base.:-(x, y::dualno_število) = dualno_število(x - y.realna_komponenta, y.dualna_komponenta)
-#Base.:-(x::dualno_število, y) = dualno_število(x.realna_komponenta - y, x.dualna_komponenta)
+#Base.:*(x::D_Š, y::D_Š) = D_Š(x.vf * y.vf, x.vf * y.vo + x.vo * y.vf)
+#Base.:*(x, y::D_Š) = D_Š(x * y.vf, x * y.vo)
+#Base.:+(x::D_Š, y::D_Š) = D_Š(x.vf + y.vf, x.vo + y.vo)
+#Base.:+(x, y::D_Š) = D_Š(x + y.vf, y.vo)
+#Base.:+(x::D_Š, y) = D_Š(x.vf + y, x.vo)
+#Base.:-(x::D_Š, y::D_Š) = D_Š(x.vf - y.vf, x.vo - y.vo)
+#Base.:-(x, y::D_Š) = D_Š(x - y.vf, y.vo)
+#Base.:-(x::D_Š, y) = D_Š(x.vf - y, x.vo)
 
-Base.:+(x::dualno_število, y::dualno_število) = dualno_število(x.realna_komponenta + y.realna_komponenta, x.dualna_komponenta + y.dualna_komponenta)
+Base.:+(x::D_Š, y::D_Š) = D_Š(x.vf + y.vf, x.vo + y.vo)
 
-Base.:+(x, y::dualno_število) = dualno_število(x + y.realna_komponenta, y.dualna_komponenta)
+Base.:+(x, y::D_Š) = D_Š(x + y.vf, y.vo)
 
-Base.:-(x::dualno_število, y::dualno_število) = dualno_število(x.realna_komponenta - y.realna_komponenta, x.dualna_komponenta - y.dualna_komponenta)
-Base.:-(x, y::dualno_število) = dualno_število(x - y.realna_komponenta, y.dualna_komponenta)
-Base.:-(x::dualno_število, y) = dualno_število(x.realna_komponenta - y, x.dualna_komponenta)
+Base.:-(x::D_Š, y::D_Š) = D_Š(x.vf - y.vf, x.vo - y.vo)
+Base.:-(x, y::D_Š) = D_Š(x - y.vf, y.vo)
+Base.:-(x::D_Š, y) = D_Š(x.vf - y, x.vo)
 
-Base.:*(x::dualno_število, y::dualno_število) = dualno_število(x.realna_komponenta * y.realna_komponenta, (x.dualna_komponenta * y.realna_komponenta) + (y.dualna_komponenta * x.realna_komponenta))
-Base.:*(x, y::dualno_število) = dualno_število(x * y.realna_komponenta, x * y.dualna_komponenta)
+Base.:*(x::D_Š, y::D_Š) = D_Š(x.vf * y.vf, (x.vo * y.vf) + (y.vo * x.vf))
+Base.:*(x, y::D_Š) = D_Š(x * y.vf, x * y.vo)
 
-Base.:/(x::dualno_število, y::dualno_število) = dualno_število(x.realna_komponenta / y.realna_komponenta, (y.realna_komponenta * x.dualna_komponenta - x.realna_komponenta * y.dualna_komponenta)/(y.realna_komponenta * y.realna_komponenta))
+Base.:/(x::D_Š, y::D_Š) = D_Š(x.vf / y.vf, (y.vf * x.vo - x.vf * y.vo)/(y.vf * y.vf))
 
-Base.:^(x::dualno_število, y::Real) = dualno_število(x.realna_komponenta ^ y, y * x.realna_komponenta ^ (y - 1) * x.dualna_komponenta)
+Base.:^(x::D_Š, y::Real) = D_Š(x.vf ^ y, y * x.vf ^ (y - 1) * x.vo)
 
-Base.:sin(x::dualno_število) = dualno_število(sin(x.realna_komponenta), cos(x.realna_komponenta))
-Base.:cos(x::dualno_število) = dualno_število(cos(x.realna_komponenta), -sin(x.realna_komponenta))
-Base.:tan(x::dualno_število) = dualno_število(tan(x.realna_komponenta), sec(x.realna_komponenta) * sec(x.realna_komponenta))
-Base.:cot(x::dualno_število) = dualno_število(cot(x.realna_komponenta), -csc(x.realna_komponenta) * csc(x.realna_komponenta))
-Base.:exp(x::dualno_število) = dualno_število(exp(x.realna_komponenta), exp(x.realna_komponenta) * x.dualna_komponenta)
-Base.:log(x::dualno_število) = dualno_število(log(x.realna_komponenta), x.realna_komponenta / x.realna_komponenta)
+Base.:sin(x::D_Š) = D_Š(sin(x.vf), cos(x.vf))
+Base.:cos(x::D_Š) = D_Š(cos(x.vf), -sin(x.vf))
+Base.:tan(x::D_Š) = D_Š(tan(x.vf), sec(x.vf) * sec(x.vf))
+Base.:cot(x::D_Š) = D_Š(cot(x.vf), -csc(x.vf) * csc(x.vf))
+Base.:exp(x::D_Š) = D_Š(exp(x.vf), exp(x.vf) * x.vo)
+Base.:log(x::D_Š) = D_Š(log(x.vf), x.vf / x.vf)
+
+convert(::Type{D_Š}, x::Real) = D_Š(x, 0.0)
+promote_rule(::Type{D_Š}, ::Type{<:Real}) = D_Š
+show(io::IO, x::D_Š) = print(io, x.vf, " + ", x.vo, "€")
 
 function push_forward(f, primal::Real, tangent::Real)
-  input = dualno_število(primal, tangent)
+  input = D_Š(primal, tangent)
   output = f(input)
-  primal_out = output.realna_komponenta
-  tangent_out = output.dualna_komponenta
+  primal_out = output.vf
+  tangent_out = output.vo
   return primal_out, tangent_out
 end
 
 
-function deriviraj(f, x::Real)
-  v = one(x)
-  _, df_dx = push_forward(f, x, v)
-  return df_dx
+function par(f, x::Real)
+  v = D_Š(x, 1.0)
+  return f(v).vf, f(v).vo
 end
 
 f(x_point)
-
-print(deriviraj(f, x_point))
+out1, out2 = par(f, x_point)
+print("Vrednost funkcije: ", out1, "\nVrednost odvoda v ", x_point, ": ", out2)
 print("\n")
